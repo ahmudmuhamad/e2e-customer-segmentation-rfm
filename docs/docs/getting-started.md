@@ -1,4 +1,3 @@
-```markdown
 # Getting Started
 
 This guide covers how to set up the project locally for development and how to run the full pipeline.

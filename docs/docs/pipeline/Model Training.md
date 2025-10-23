@@ -1,4 +1,4 @@
-# 2. Model Training
+# Model Training
 
 The `src/modeling/train.py` script is responsible for training the segmentation model.
 
