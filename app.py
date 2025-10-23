@@ -1,6 +1,7 @@
 import joblib
 import numpy as np
 import uvicorn
+import pandas as pd  # Import pandas
 from fastapi import FastAPI, APIRouter
 from pathlib import Path
 
@@ -21,15 +22,29 @@ BASE_DIR = Path(__file__).resolve().parent
 MODELS_DIR = BASE_DIR / "models"
 SCALER_PATH = MODELS_DIR / "scaler.pkl"
 MODEL_PATH = MODELS_DIR / "kmeans_model.pkl"
+PROCESSED_DATA_PATH = BASE_DIR / "data" / "processed" / "rfm_features.csv" # Path to training features
 
 # Load the scaler and model at startup
 try:
     SCALER = joblib.load(SCALER_PATH)
     MODEL = joblib.load(MODEL_PATH)
     print("Models and scaler loaded successfully.")
+
+    # --- NEW: Load training data to get min/max bounds for clipping ---
+    print(f"Loading feature bounds from {PROCESSED_DATA_PATH}...")
+    training_features_df = pd.read_csv(PROCESSED_DATA_PATH)
+    feature_cols = ['recency_log', 'frequency_log', 'monetary_log']
+    
+    # Store the min/max values for clipping
+    MIN_VALS = training_features_df[feature_cols].min().values
+    MAX_VALS = training_features_df[feature_cols].max().values
+    
+    print(f"Min bounds set: {MIN_VALS}")
+    print(f"Max bounds set: {MAX_VALS}")
+    
 except FileNotFoundError:
-    print("Error: Model or scaler file not found. Run 'make all' first.")
-    SCALER, MODEL = None, None
+    print("Error: Model, scaler, or rfm_features.csv file not found. Run 'make all' first.")
+    SCALER, MODEL, MIN_VALS, MAX_VALS = None, None, None, None
 
 # Define the segment map from your project
 SEGMENT_NAME_MAP = {
@@ -42,7 +57,6 @@ SEGMENT_NAME_MAP = {
 # --- 3. Define the API Endpoints ---
 
 # --- NEW: Create a v1 Router ---
-# All v1 endpoints will be added to this router
 v1_router = APIRouter(
     prefix="/api/v1",  # This adds /api/v1 to all routes in this router
     tags=["v1 - Customer Segmentation"]  # This groups them nicely in the docs
@@ -90,8 +104,12 @@ def segment_customer(data: CustomerData):
     # 3. Put features into a 2D array for the scaler
     features_log = np.array([[recency_log, frequency_log, monetary_log]])
 
-    # 4. Scale the features
-    features_scaled = SCALER.transform(features_log)
+    # --- NEW: Clip the log-transformed data to training bounds ---
+    # This prevents outliers from breaking the scaler
+    features_clipped = np.clip(features_log, MIN_VALS, MAX_VALS)
+    
+    # 4. Scale the *clipped* features
+    features_scaled = SCALER.transform(features_clipped)
 
     # 5. Predict the cluster
     cluster_label = MODEL.predict(features_scaled)[0]
@@ -114,4 +132,3 @@ if __name__ == "__main__":
     # This block allows you to run the app with 'python app.py'
     # --reload is great for development
     uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
-
