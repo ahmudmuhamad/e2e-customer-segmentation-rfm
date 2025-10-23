@@ -1,0 +1,25 @@
+# Python virtual environment
+.venv/
+
+# Bytecode files
+__pycache__/
+*.py[cod]
+
+# IDE and OS files
+.vscode/
+.git/
+.gitignore
+.DS_Store
+
+# Large data and analysis files not needed by the API
+data/raw/
+data/interim/
+notebooks/
+reports/
+
+# The full dev requirements
+requirements.txt
+
+# Makefile and other project files
+Makefile
+README.md
