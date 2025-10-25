@@ -1,6 +1,6 @@
 # **e2e-RFM-based Customer Segmentation**
 
-An end-to-end machine learning system to cluster e-commerce customers using RFM analysis and deploy the model as a real-time, containerized FastAPI application.
+An end-to-end machine learning system to cluster e-commerce customers using RFM analysis and deployed the model as a real-time, containerized FastAPI application using AWS.
 
 
 
