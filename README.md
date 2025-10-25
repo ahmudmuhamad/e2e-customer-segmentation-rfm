@@ -12,13 +12,13 @@ The entire workflow is automated with a Makefile, the API is containerized with 
 
 The model groups customers into four distinct segments, allowing for targeted and effective marketing strategies:
 
-* **🥇 Champions:** Your best and most loyal customers. They buy recently, frequently, and spend the most.  
+* **Champions:** Your best and most loyal customers. They buy recently, frequently, and spend the most.  
   * **Strategy:** Reward them with loyalty programs, early access, and personalized engagement. Avoid discounts.  
-* **⚠️ At-Risk:** High-value customers who *used* to buy frequently but haven't purchased in a while.  
+* **At-Risk:** High-value customers who *used* to buy frequently but haven't purchased in a while.  
   * **Strategy:** High-priority. Win them back with personalized re-engagement emails and special discounts.  
-* **🆕 New Customers:** First-time or recent buyers with low frequency.  
+* **New Customers:** First-time or recent buyers with low frequency.  
   * **Strategy:** Nurture them. Send a welcome series and offer incentives for a second purchase to build frequency.  
-* **📉 Lost Customers:** Customers with high recency (long time since last purchase) and low frequency/monetary value.  
+* **Lost Customers:** Customers with high recency (long time since last purchase) and low frequency/monetary value.  
   * **Strategy:** Low-priority. Include in a low-cost win-back newsletter, but do not spend significant marketing budget.
 
 ## **3\. Technologies Used**
@@ -39,7 +39,7 @@ The model groups customers into four distinct segments, allowing for targeted an
 ## **4\. Project Architecture**
 
 ```
-├── LICENSE            <- Open-source license if one is chosen
+├── LICENSE            <- MIT licence 
 ├── Makefile           <- Makefile with convenience commands like `make data` or `make train`
 ├── README.md          <- The top-level README for developers using this project.
 ├── data
@@ -106,7 +106,7 @@ The model groups customers into four distinct segments, allowing for targeted an
    ```
 
 
-3. **Create and activate the environment:**
+2. **Create and activate the environment:**
    ``` 
    \# Create the .venv  
    make create\_environment
@@ -118,7 +118,7 @@ The model groups customers into four distinct segments, allowing for targeted an
    source .venv/bin/activate
    ```
 
-5. **Install dependencies:**  
+3. **Install dependencies:**  
     ```
    make requirements
     ```
@@ -131,8 +131,10 @@ You can run this project as an automated pipeline, a live API server, or a Docke
 
 This is the simplest way to run the project. It will process all data and train the models from scratch.
 
-\# This command runs data, train, and predict steps in order  
-make all
+\# This command runs data, train, and predict steps in order:
+      ```
+     make all
+      ```
 
 This will:
 
@@ -159,12 +161,12 @@ After running make all (which creates the model files), you can start the API se
 5. Send a Request:  
    Use the interactive docs or curl to send a POST request:  
     ```
-   curl \-X POST "\[http://127.0.0.1:8000/api/v1/segment\](http://127.0.0.1:8000/api/v1/segment)" \\  
-   \-H "Content-Type: application/json" \\  
-   \-d '{  
-         "recency": 15,  
-         "frequency": 2,  
-         "monetary": 350.75  
+     curl -X POST "http://127.0.0.1:8000/api/v1/segment" \
+   -H "Content-Type: application/json" \
+   -d '{
+         "recency": 15,
+         "frequency": 2,
+         "monetary": 350.75
        }'
     ```
     ```
@@ -209,3 +211,23 @@ This project includes a full documentation website. To view it locally:
 
 3. View in browser:  
    Open http://127.0.0.1:8001 to see the full site.
+
+
+
+## 7. Deployment Architecture (AWS)
+
+This project is not just a local script; it is a fully **deployment-ready** application. The system has been successfully containerized with Docker and deployed on **Amazon Web Services (AWS)**.
+
+The architecture is designed to be scalable, secure, and automated, using a modern CI/CD approach.
+
+### Key Deployment Features:
+* **Containerized:** The `Dockerfile` creates a minimal, secure, and fast-starting image for the FastAPI application.
+* **Container Registry:** The image is designed to be pushed to **Amazon ECR (Elastic Container Registry)**, providing a secure, private registry for the production image.
+
+* **CI/CD Ready:** The project structure is built to plug directly into an **AWS CodePipeline** workflow. A push to the `main` branch can be configured to automatically test, build, and deploy the new version of the API.
+
+### Note on Free Tier & Availability
+
+This deployment was successfully tested and validated using the AWS Free Tier.
+
+To demonstrate a cost-conscious *and* production-ready architecture, the public endpoint is not kept active 24/7. The infrastructure is fully defined and can be **spun up on demand** to serve the API, proving the deployment pipeline is functional without incurring unnecessary costs.
