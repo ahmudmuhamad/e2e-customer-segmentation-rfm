@@ -2,6 +2,13 @@
 
 An end-to-end machine learning system to cluster e-commerce customers using RFM analysis and deploy the model as a real-time, containerized FastAPI application.
 
+
+
+![An end-to-end machine learning system to cluster e-commerce customers using RFM analysis and deploy the model as a real-time, containerized FastAPI application.](reports/figures/Gemini_Generated_Image_emdp79emdp79emdp (1).png)
+
+
+
+
 ## **1\. Introduction**
 
 This project moves beyond a simple analysis notebook to a production-ready, MLOps-focused system. It takes raw e-commerce transaction data, engineers RFM (Recency, Frequency, Monetary) features, trains a K-Means clustering model, and deploys this model as a high-performance API.
