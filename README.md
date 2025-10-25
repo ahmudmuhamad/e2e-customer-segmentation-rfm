@@ -4,7 +4,9 @@ An end-to-end machine learning system to cluster e-commerce customers using RFM 
 
 
 
-![An end-to-end machine learning system to cluster e-commerce customers using RFM analysis and deploy the model as a real-time, containerized FastAPI application.](reports/figures/Gemini_Generated_Image_emdp79emdp79emdp (1).png)
+# **e2e-RFM-based Customer Segmentation**
+
+![An end-to-end machine learning system to cluster e-commerce customers using RFM analysis and deploy the model as a real-time, containerized FastAPI application.](https://github.com/ahmudmuhamad/e2e-customer-segmentation-rfm/raw/main/reports/figures/Gemini_Generated_Image_emdp79emdp79emdp%20(1).png)
 
 
 
